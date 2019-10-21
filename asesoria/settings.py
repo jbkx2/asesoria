@@ -147,3 +147,7 @@ REST_FRAMEWORK = {
 }
 
 TIME_INPUT_FORMATS= ( '%H:%M', )
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
