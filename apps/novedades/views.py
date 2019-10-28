@@ -1,6 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework.permissions import BasePermission, DjangoModelPermissions, SAFE_METHODS
-from django.views.generic import TemplateView
+from django.views.generic import ListView
+from django.shortcuts import render
+from django.urls import reverse_lazy
 
 from .serializers import NovedadSerializer
 from .models import Novedad
@@ -9,5 +14,33 @@ class NovedadViewSet(viewsets.ModelViewSet):
 	queryset = Novedad.objects.all()
 	serializer_class = NovedadSerializer
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, ListView):
+	model = Novedad
 	template_name = 'index.html'
+	context_object_name = 'novedades'
+
+class NovedadDetail(LoginRequiredMixin, DetailView):
+	model = Novedad
+	template_name = 'novedad/detalle.html'
+	context_object_name = 'novedad'
+
+
+# Sirve para crear un formulario y dar de alta una Novedad fuera del admin
+class NovedadCreate(LoginRequiredMixin, CreateView):
+	model = Novedad
+	fields = ['titulo']
+	template_name = 'novedad/create.html'
+	success_url = reverse_lazy('novedades:index')
+
+
+class NovedadUpdate(LoginRequiredMixin, UpdateView):
+	model = Novedad
+	fields = ['titulo']
+	template_name = 'novedad/update.html'
+	success_url = reverse_lazy('novedades:index')
+
+
+class NovedadDelete(LoginRequiredMixin, DeleteView):
+	model = Novedad
+	template_name = 'novedad/delete.html'
+	success_url = reverse_lazy('novedades:index')
