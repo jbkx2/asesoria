@@ -1,47 +1,23 @@
-{% extends "base.html" %}
-{% block title %} Bienvenido {% endblock %}
-{% block content %}
-	<div class="container">
-	<div class="row">
-		<div class="col mt-2 mb-2">
-			<h1>Novedades</h1>
+{% extends 'base.html' %}
 
-			<a href="{% url 'novedades:novedad_create' %}" class="btn btn-sm btn-dark mt-2 mb-2">Crear novedad</a>
+{% block title %}Novedades{% endblock %}
+
+{% block content %}
+<div class="text-center">
+		<h1>Listado de Noticias</h1>
+		<div class="row justify-content-center">
+			{% for novedad in novedades %}
+				<div class="col-4">
+					<div class="card text-center" style="width: 18rem;">
+						<img src="{{ novedad.imagen.url }}" class="card-img-top" title="Foto sobre la noticia" alt="..." width="500" height="250">
+						<div class="border border-primary rounded-bottom" style="background-color: #FF8F10;">
+							<h4 class="card-title">{{ novedad.titulo }}</h4>
+							<h5>{{ novedad.desc }}</h5>
+							<a href="#" class="btn btn-primary">Ver Novedad</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
 		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<table class="table text-center">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Nombre</th>
-						<th>Fecha</th>
-						<th>Modificacion</th>
-						<th>Detalle</th>
-						<th>Editar</th>
-						<th>Eliminar</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for novedad in novedades %}
-					<tr>
-						<th>{{ novedad.id }}</th>
-						<td>{{ novedad.titulo }}</td>
-						<td>{{ novedad.creacion }}</td>
-						<td>{{ novedad.modificacion }}</td>
-						<td><a href=""><i class="far fa-eye"></i></a></td>
-						<td><a href=""><i class="fas fa-pencil-alt"></i></a></td>
-						<td><a href=""><i class="far fa-trash-alt"></i></a></td>
-					</tr>
-					{% empty %}
-					<tr>
-						<td>No hay resultado</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
 </div>
-{% endblock %}
+{% endblock content %}
